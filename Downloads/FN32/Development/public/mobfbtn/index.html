@@ -1,0 +1,271 @@
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Touchable</title>
+        <!--<script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.js"></script>-->
+        <script type="text/javascript" src="../mobileln/jquery.js"></script>
+        <style>
+            body{background: black;}
+            .content{width: 465px;margin:auto;margin-top:0px;}
+            /*.eninput{width:100%;}*/
+            .tbn{
+                float: left;
+                width: 465px;
+                height: auto;
+            }
+            button#id0,button#id1,button#id2,button#id3,button#id4,button#id5,button#id6,button#id7,
+            button#id8,button#id9,button#id10,button#id11{
+                height: 125px;
+                width:160px;
+                text-align:center; 
+                font-size: 45px;
+                /*background: #b0c4de;*/
+                background:white;
+            }
+            button#idclear{
+                height: 125px;
+                width:160px;
+                text-align:center; 
+                font-size: 27px;
+                color:blue;
+                background: #b0c4de;
+                font-weight: bold;
+            }
+           
+            .tbn .btns th.userlogo img{
+                height: 100px;
+                width:100%;
+            }
+            .tbn .btns th.userlogo #blogo{
+                height: 100px;
+            }
+            .cbtn{
+                color:blue;
+                font-weight: bold;
+            }
+            .tbn .btns th.phonenument{
+                color:blue;
+                height: 60px;
+                font-size: 35px;
+                width: 100%;
+            }
+            .tbn .btns #id12{
+                background:darkgreen;
+                height: 125px;
+                width:160px;
+                font-size: 35px;
+                color:white;
+            }
+            .readiim{
+                background: orange;
+            }
+            .addwhite{
+                background: #F9F9F9;
+            }
+            .content .tbn .btns {border-collapse:collapse; width: 100%; height: 100%}
+        </style>
+        <script type="text/javascript">
+            function getURLParameter(name) {
+                return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1].replace(/\+/g, '%20'))||null;
+            }
+            
+            var BID = getURLParameter('id');
+            
+            $(document).ready(function(){
+                var bimg = true;
+                $('.tbn .btns th.phonenument').addClass('addwhite');
+                $('.tbreadim').hide();
+                var str = "";
+                var img ="../images/tablogo/"+BID+".png";
+                var img1 = new Image();
+                img1.src = "../images/tablogo/"+BID+".png";
+                
+                img1.onload = function() {
+                    if(img1.width == 0) {
+                        bimg = false;
+                    } 
+                }
+                img1.onload();
+                if(!bimg){
+                    img="../images/logo/texmdefault.png";
+                }
+                $('#blogo').attr('src',img);
+                var phlng = 12;
+                $(".btns button.justbutton").click(function(e) {
+                    var vl = $(this).text();
+                    if(str.length < phlng){
+                        if(str.substring(0,1)==1){
+                            phlng = 14;
+                            if(str.length ==1 || str.length ==5 || str.length ==9){
+                                str = str.concat('-');str = str.concat(vl);
+                            }
+                            else{
+                                str = str.concat(vl);
+                            }
+                        }
+                        else{
+                            phlng = 12;
+                            if(str.length ==3 || str.length ==7){
+                                str = str.concat('-'); str = str.concat(vl);
+                            }else{
+                                str = str.concat(vl);
+                            }
+                        }
+                        $('.tbn .btns th.phonenument').text(str);
+                    }
+                    e.stopPropagation();
+                });
+               
+                $('#blogo').click(function(){
+                    if($('.tbn .btns th.phonenument').hasClass('addwhite')==true){
+                        $('.tbn .btns th.phonenument').removeClass('addwhite');
+                        $('.tbn .btns th.phonenument').addClass('readiim');
+                        str='';
+                        $('.tbn .btns th.phonenument').text('');
+                    }else{
+                        $('.tbn .btns th.phonenument').removeClass('readiim');
+                        $('.tbn .btns th.phonenument').addClass('addwhite');
+                        str='';
+                        $('.tbn .btns th.phonenument').text('');
+                    }
+                });
+       
+                $('.tbn .btns td button.cbtn').on('click',function(){
+                    var phlength = str.length;
+                    --phlength
+                    str =str.substring(0, phlength);
+                    $('.tbn .btns th.phonenument').text(str);
+                    $('.tbn .btns th.phonenument').css("color","blue");
+                });
+        
+                $('.tbn .btns td button#id12').on('click',function(){
+                    var bhasClass = false;
+                    if($('.tbn .btns th.phonenument').hasClass('readiim')){
+                        bhasClass = true;
+                    }
+                    var dval = $('.tbn .btns th.phonenument').text().replace(/[^\d]/g,'');
+                    var phlength = dval.length;
+                    var bPhone = true;
+                    if(phlength == 10)
+                    {
+                        dval = "1"+dval;
+                        bPhone = true;
+                    }
+                    else if(phlength !=0 && phlength < 10 || phlength >= 12){
+                        $('.tbn .btns th.phonenument').text(dval+" Incorrect #").css("color","red");
+                        bPhone = false;
+                    }
+                    if(!bhasClass){
+                        var $path = "rewards.php";
+                        var $data = "rid="+BID+"&rphone=" +dval;
+                        if(bPhone){
+                            $.ajax({
+                                type:"POST",
+                                url:$path,
+                                data:$data,
+                                success: function(data){
+//                                    var $data1 = (data)?data:'empty';
+                                     if(data!='')
+                                             $(".tbn .btns th.phonenument").text(data);
+                                }
+                            });
+                            str = "";
+                            $('.tbn .btns th.phonenument').text("");  
+                        }
+                    }
+                    if(bhasClass){
+                        var $path = "rewards.php";
+                        var $data = "rid="+BID+"&rphone=" +dval +"&reward=reward";  
+                        if(bPhone){
+                            $.ajax({
+                                type:"POST",
+                                url:$path,
+                                data:$data,
+                                success: function(data){
+                                    var $data1 = (data)?data:'empty';
+                                    $('.tbn .btns th.phonenument').text($data1);
+                                }
+                            });
+                        }
+                    }
+                });
+                $('#idclear').on('click',function(){
+                    if($('.tbn .btns th.phonenument').hasClass('addwhite')){
+                        $('.tbn .btns th.phonenument').text("");
+                        str="";
+                    }
+                }
+            ); 
+            });
+//            $(document).ready(function() {
+//                if (navigator.userAgent.match(/Android/i)) {
+//                    window.scrollTo(0,0); // reset in case prev not scrolled  
+//                    var nPageH = $(document).height();
+//                    var nViewH = window.outerHeight;
+//                    if (nViewH > nPageH) {
+//                        //      nViewH -= 250;
+//                        nViewH = nViewH / window.devicePixelRatio;
+//                        $('body').css('height',nViewH + 'px');
+//                    }
+//                    setTimeout(window.scrollTo(1,1),0);
+//                    if ($(window).scrollTop() == 0)   
+//                    //scroll back down  
+//                    {window.scrollTo(1,1)}
+//                }
+//            });
+      
+        </script>
+        <!--<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no, width=device-width" />-->
+        <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=yes;" />
+        <meta name="viewport" content="target-densitydpi=device-dpi, width=device-width" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+    </head>
+    <!--<body onload="page_Load()">-->
+    <body>
+        <div class="content">
+            <div class="tbn">
+                <table border="0"  class="btns">
+                    <thead>
+                        <tr>
+                            <th colspan="3" class="userlogo"><img id="blogo" src=""></th>
+                        </tr>
+                        <tr>
+                            <th colspan="3" class="phonenument"></th>
+                        </tr>
+                    </thead>
+                    <tr>
+                        <td><button id="id1" class="justbutton">1</button></td>
+                        <td><button id="id2" class="justbutton">2</button></td>
+                        <td><button id="id3" class="justbutton">3</button></td>
+                    </tr>
+                    <tr>
+                        <td><button id="id4" class="justbutton">4</button></td>
+                        <td><button id="id5" class="justbutton">5</button></td>
+                        <td><button id="id6" class="justbutton">6</button></td>
+                    </tr>
+                    <tr>
+                        <td><button id="id7" class="justbutton">7</button></td>
+                        <td><button id="id8" class="justbutton">8</button></td>
+                        <td><button id="id9" class="justbutton">9</button></td>
+                    </tr>
+                    <tr>
+                        <td><button id="idclear">CLEAR</button></td>
+                        <td><button id="id0" class="justbutton">0</button></td>
+                        <td><button id="id12" class="idsend">Send</button></td>
+                    </tr>
+                </table>
+                <div style="margin-left: 15px; float: left; width: 50px; height: auto;"><img src="../images/logo/textmunication.png" alt="Textmunication" style="width:220px;">
+                </div>
+                <div style="margin-left: 15px; float: left; width: 100%; height: auto;">
+                    <span style="color:white">Standard text/data rates may apply, up to 5 messages/month. You can opt-out
+                        anytime Text STOP to 87365"</span>
+                </div>
+            </div>
+        </div>
+       
+    </body>
+</html>

@@ -1,0 +1,330 @@
+<?php
+class Application_Model_Message extends Application_Model_Abstract {
+	/**
+	 * The log file for model logging
+	 * 
+	 * @var string
+	 */
+	public $logFile = '/tmp/messagelog.log';
+	
+	/**
+	 * User Model sending the message
+	 * 
+	 * Gets set in the constructor. This model requires a user model to be instantiated.
+	 * 
+	 * @var id
+	 * @access public
+	 */
+	public $user;
+	
+	/**
+	 * Message body to be sent.
+	 * 
+	 * @var string
+	 * @access public
+	 */
+	public $body;
+	
+	/**
+	 * Recipient list for this message
+	 * 
+	 * (default value: array())
+	 * 
+	 * @var array
+	 * @access public
+	 */
+	public $recipients = array();
+	
+	/**
+	 * Message Reply body.
+	 * 
+	 * @var string
+	 * @access public
+	 */
+	public $replybody;
+	
+	/**
+	 * campaignid
+	 * 
+	 * @var mixed
+	 * @access public
+	 */
+	public $campaignid;
+    
+    /**
+     * scheduleid
+     * 
+     * @var mixed
+     * @access public
+     */
+    public $scheduleid;
+    
+    /**
+     * sponsorid
+     * 
+     * @var mixed
+     * @access public
+     */
+    public $sponsorid;
+    
+    /**
+     * linkid
+     * 
+     * @var mixed
+     * @access public
+     */
+    public $linkid;
+    
+    /**
+     * folderid
+     * 
+     * @var mixed
+     * @access public
+     */
+    public $folderid = 0;
+    
+    /**
+     * keyword
+     * 
+     * @var mixed
+     * @access public
+     */
+    public $keywordid = 0;
+    
+    /**
+     * User assigned description of this message
+     * 
+     * @var string
+     * @access public
+     */
+    public $description;
+    
+	/**
+	 * A cross reference key used in sending the message
+	 *
+	 * @var int
+	 * @access public
+	 */
+	public $reportingkey1;
+	
+	/**
+	 * A cross reference key used in sending the message
+	 *
+	 * @var string
+	 * @access public
+	 */
+	public $reportingkey2;
+	
+    /**
+     * Constructor will require and load the user model of the user requesting this model.
+     * 
+     * @access public
+     * @param Application_Model_User $user
+     * @return void
+     */
+    public function __construct(Application_Model_User $user = null) {
+        if ($user instanceof Application_Model_User) {
+			$this->setUser($user);
+		}
+    }
+	
+    /**
+     * Sets a user model into this model
+     * 
+     * @access public
+     * @param Application_Model_User $user
+     */
+    public function setUser(Application_Model_User $user) {
+    	$this->user = $user;
+    }
+    
+	/**
+	 * Sends a message to a collection of recipients (or one recipient)
+	 *
+	 * @access public
+	 * @param string $message The message to send
+	 * @param array $recipients An array of recipients to send to
+	 * @param string $sendtime A timestamp to schedule the message for
+	 * @return boolean
+	 */
+	public function queue($body, $recipients, $sendtime = null, $timezone = null) {
+		if ($sendtime) {
+			$sendtime = date('Y-m-d H:i:s', strtotime($sendtime));
+		}
+		
+		$this->body = $body;
+		$this->recipients = (array) $recipients;
+		$this->sendtime = $sendtime;
+		$this->timezone = $timezone;
+		
+		// Build the reporting keys, used for cross referencing DRs
+		$this->reportingkey1 = time();
+		$this->reportingkey2 = md5(uniqid() . serialize($this->recipients));
+		
+		// Send this message to the outbound sms class to be sent.
+		$sender = new Application_Model_Smsoutbound($this);
+		if (($return = $sender->queue()) === false) {
+			$this->error = $sender->error;
+		}
+		
+		return $return;
+	}
+	
+	/**
+	 * Sends a message to a collection of recipients (or one recipient)
+	 * 
+	 * THIS ABSOLUTELY REQUIRES THAT THIS MODEL BE BUILT USING THE _load METHOD
+	 *
+	 * @access public
+	 * @param string $message The message to send
+	 * @param array $recipients An array of recipients to send to
+	 * @param string $sendtime A timestamp to schedule the message for
+	 * @return boolean
+	 */
+	public function send() {
+		$this->_writeLog("Message->Send() called...");
+		// General concept here is simple... load up a message and all of the
+		// recipients based simply on the message id from the queue
+		if ($this->id && $this->body && $this->recipients && $this->reportingkey1 && $this->reportingkey2) {
+			$this->_writeLog("All message components checked");
+			$sender = new Application_Model_Smsoutbound($this);
+			$this->_writeLog("Sender built");
+			if (($return = $sender->send()) === false) {
+				$this->error = $sender->error;
+			}
+			$this->_writeLog("Sender->Send() called from the message...");
+			return $return;
+		}
+		$this->_writeLog('Missing required components of the message: ' . serialize($this));
+		$this->error = 'Missing required components of the message: ' . serialize($this);
+		return false;
+	}
+	
+	public function receive(Application_Model_Smsinbound $message) {}
+	
+	public function status() {}
+	
+	/**
+	 * Gets the queue of unsent messages and builds a collection of message and
+	 * recipient data, grouped by message row id (gatewaymessageid)
+	 * 
+	 * @return array
+	 */
+	public function getQueue() {
+		$return = array();
+		$sql = "CALL message_get_queue()";
+		$this->_writeLog("About to fetch queue with $sql");
+		$rs = $this->query($sql);
+		$this->_writeLog("Query ran...");
+		$this->_writeLog(print_r($rs, 1));
+		if (!$this->hasError()) {
+			// Since this query only returns IDs (message and user), use those to assemble message models
+			while ($row = $rs->fetchObject()) {
+				if ($row->userid) {
+					$this->_writeLog("Building a new message model with user {$row->userid}");
+					$m = new Application_Model_Message(new Application_Model_User($row->userid));
+					$this->_writeLog("Message model created, about to load with message {$row->id}");
+					$m->loadFromQueueId($row->id);
+					$rcount = count($m->recipients);
+					$this->_writeLog("Message id {$row->id} loaded... adding it to the stack with $rcount recipients");
+					$return[$row->id] = $m;
+				} else {
+					$this->_writeLog("There is no user id for this message.... skipping");
+				}
+			}
+		} else {
+			$this->setError($this->_dbh->error);
+			$this->_writeLog("Error: $this->_dbh->error");
+		}
+		
+		return $return;
+	}
+	
+	/**
+	 * Sends the queue of messages, writes the reports and such
+	 * 
+	 * @access public
+	 * @return boolean
+	 */
+	public function sendQueue() {
+		$queue = $this->getQueue();
+		$queueCount = count($queue);
+		$sendCount = 0;
+		foreach ($queue as $id => $message) {
+			if ($message instanceof Application_Model_Message) {
+				if ($message->send()) {
+					$sendCount++;
+				}
+			}
+		}
+		
+		return $sendCount == $queueCount;
+	}
+    
+    /**
+	 * Sends a message to a collection of recipients (or one recipient)
+	 *
+	 * @access public
+	 * @param string $message The message to send
+	 * @param array $recipients An array of recipients to send to
+	 * @return boolean
+	 */
+	public function sendNow($body, $recipients) {
+		$this->body = $body;
+		$this->recipients = (array) $recipients;
+		
+		// Build the reporting keys, used for cross referencing DRs
+		$this->reportingkey1 = time();
+		$this->reportingkey2 = md5(uniqid() . serialize($this->recipients));
+		
+		// Send this message to the outbound sms class to be sent.
+		$sender = new Application_Model_Smsoutbound($this);
+		if (($return = $sender->sendNow()) === false) {
+			$this->setError($sender->error, true);
+		}
+		
+		return $return;
+	}
+	
+	/**
+	 * Loads a queued message and its associated recipients from a message id
+	 *  
+	 * @param int $id
+	 */
+	public function loadFromQueueId($id) {
+		$this->_load($id, true);
+	}
+	
+	/**
+	 * Load up this model with data from the query
+	 * 
+	 * @param int $id
+	 */
+	public function _load($id = 0, $queued = false) {
+		if ($id) {
+			$sql = 'CALL message_get';
+			if ($queued) {
+				$sql .= '_queueid';
+			} 
+			$sql .= "($id)";
+			// We absolutely need, at the very least:
+			// id, body, recipients, reportingkey1, reportingkey2
+			// All but recipients from messages outbound
+			$rs = $this->query($sql);
+			if (!$this->hasError()) {
+				while ($row = $rs->fetchObject()) {
+					// Use the first row to build our message components
+					if ($rs->isFirst) {
+						$this->id = $row->id;
+						$this->body = $row->body;
+						$this->reportingkey1 = $row->reportingkey1;
+						$this->reportingkey2 = $row->reportingkey2;
+					}
+					
+					// Stack recipients onto this message before returning
+					$this->recipients[] = $row->mobilenumber;
+				}
+			}
+		}
+	}
+}

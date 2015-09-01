@@ -1,0 +1,301 @@
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Touchable</title>
+        <script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.js"></script>
+        <!--<script src="http://code.jquery.com/jquery-1.9.1.js"></script>-->
+        <style>
+            .content{
+                width: 400px;
+                /*height: auto;*/
+                margin: auto;
+                margin-top: 25px
+            }
+            .eninput{
+                /*float: left;*/
+                width:500px;
+                /*margin-bottom: 2px;*/
+            }
+            .tbn{
+                float: left;
+                width: 100%;
+                height: 100%;
+            }
+            input#id0,input#id1,input#id2,input#id3,input#id4,input#id5,input#id6,input#id7,
+            input#id8,input#id9,input#id10,input#id11,input#id12{
+                height: 125px;
+                width:125px;
+                text-align:center; 
+                font-size: 40px;
+            }
+            input#id12{
+                /*height: auto;*/
+                width:100%;
+                text-align:center; 
+            }
+            .tbn .btns td{
+                height: 100px;
+                width:100px;
+            }
+            .tbn .btns th.userlogo img{
+                height: 100px;
+                width:100%;
+            }
+            .cbtn{
+                color:blue;
+                font-weight: bold;
+            }
+            .tbn .btns th.phonenument{
+                color:blue;
+                /*background:#F9F9F9;*/
+                height: 60px;
+                font-size: 35px
+            }
+            #id12{
+                background:#98c700;
+            }
+            .readiim{
+                background: orange;
+            }
+            .addwhite{
+                background: #F9F9F9;
+            }
+        </style>
+        <script type="text/javascript">
+            function getURLParameter(name) {
+                return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1].replace(/\+/g, '%20'))||null;
+            }
+            
+            var BID = getURLParameter('id');
+            $(document).ready(function(){
+                var bimg = true;
+                $('.tbn .btns th.phonenument').addClass('addwhite');
+                $('.tbreadim').hide();
+                var str = "";
+                var img ="../images/logo/"+BID+".png";
+                var img1 = new Image();
+                img1.src = "../images/logo/"+BID+".png";
+                img1.onload = function() {
+                 if(this.width==0) {
+                     bimg = false;
+                 } 
+               }
+                img1.onload();
+//               alert(bimg);
+               if(!bimg){
+                   img="../images/logo/texmdefault.png";
+               }
+              
+                $('#blogo').attr('src',img);
+                var phlng = 12;
+                $(".btns input.justbutton").click(function(e) {
+                    var vl = $(this).attr('value');
+                    if(str.length < phlng){
+                        if(str.substring(0,1)==1){
+                            phlng = 14;
+                            if(str.length ==1 || str.length ==5 || str.length ==9){
+                                str = str.concat('-');str = str.concat(vl);
+                            }
+                            else{
+                                str = str.concat(vl);
+                            }
+                        }
+                        else{
+                            phlng = 12;
+                            if(str.length ==3 || str.length ==7){
+                                str = str.concat('-'); str = str.concat(vl);
+                            }else{
+                                str = str.concat(vl);
+                            }
+                        }
+                        $('.tbn .btns th.phonenument').text(str);
+                    }
+                    $('.tbn .btns th.phonenument').css("color","blue");
+                });
+              
+                $('#blogo').click(function(){
+                    if($('.tbn .btns th.phonenument').hasClass('addwhite')==true){
+                         $('.tbn .btns th.phonenument').removeClass('addwhite');
+                         $('.tbn .btns th.phonenument').addClass('readiim');
+                         str='';
+                         $('.tbn .btns th.phonenument').text('');
+                    }else{
+                        $('.tbn .btns th.phonenument').removeClass('readiim');
+                        $('.tbn .btns th.phonenument').addClass('addwhite');
+                        str='';
+                         $('.tbn .btns th.phonenument').text('');
+                    }
+                   
+                });
+//                $('#blogo').click(function(){
+//                    $('.tbn .btns th.phonenument').removeClass('readiim');
+//                    $('.tbn .btns th.phonenument').addClass('addwhite');
+//                    $('.tbn .btns th.phonenument').text('');
+//                    str = '';
+//                });
+       
+                $('.tbn .btns td input.cbtn').click(function(){
+                    var phlength = str.length;
+                    --phlength
+                    str =str.substring(0, phlength);
+                    $('.tbn .btns th.phonenument').text(str);
+                    $('.tbn .btns th.phonenument').css("color","blue");
+                });
+        
+                $('.tbn .btns td input#id12').click(function(){
+                    var bhasClass = false;
+                    if($('.tbn .btns th.phonenument').hasClass('readiim')){
+                        bhasClass = true;
+                    }
+                    var dval = $('.tbn .btns th.phonenument').text().replace(/[^\d]/g,'');
+                    var phlength = dval.length;
+                    var bPhone = true;
+                    if(phlength == 10)
+                    {
+                        dval = "1"+dval;
+                        bPhone = true;
+                    }
+                    else if(phlength !=0 && phlength < 10 || phlength >= 12){
+                        $('.tbn .btns th.phonenument').text(dval+" Incorrect #").css("color","red");
+                        bPhone = false;
+                    }
+                    //             var $path = "/messages/rewards/";
+                    if(!bhasClass){
+                        var $path = "rewards.php";
+                        var $data = "rid="+BID+"&rphone=" +dval;
+                        if(bPhone){
+                            $.ajax({
+                                type:"POST",
+                                url:$path,
+                                data:$data,
+                                success: function(data){
+                                    var $data1 = (data)?data:'empty';
+                                }
+                            });
+                            str = "";
+                            $('.tbn .btns th.phonenument').text("");  
+                        }
+                    }
+                    // redeam rewards ajax call
+                    if(bhasClass){
+                        var $path = "rewards.php";
+                        var $data = "rid="+BID+"&rphone=" +dval +"&reward=reward";  
+                        if(bPhone){
+                            $.ajax({
+                                type:"POST",
+                                url:$path,
+                                data:$data,
+                                success: function(data){
+                                    var $data1 = (data)?data:'empty';
+                                    $('.tbn .btns th.phonenument').text($data1);
+                                }
+                            });
+                        }
+                    }
+                });
+            });
+      
+            $(document).ready(function() {
+
+                if (navigator.userAgent.match(/Android/i)) {
+                    window.scrollTo(0,0); // reset in case prev not scrolled  
+                    var nPageH = $(document).height();
+                    var nViewH = window.outerHeight;
+                    if (nViewH > nPageH) {
+                        //      nViewH -= 250;
+                        nViewH = nViewH / window.devicePixelRatio;
+                        $('body').css('height',nViewH + 'px');
+                    }
+                    setTimeout(window.scrollTo(1,1),0);
+                    if ($(window).scrollTop() == 0)   
+                    //scroll back down  
+                    {window.scrollTo(1,1)}
+                }
+            });
+      
+            hideAddressBar = function() {
+                window.scrollTo(0,0);
+                var nPageH = document.height;
+                var nViewH = window.outerHeight;
+                if (nViewH > nPageH) {
+                    nViewH -= 250;
+                    document.body.style.height = nViewH + 'px';
+                }
+                setTimeout(window.scrollTo(0,1),0);
+                if ($(window).scrollTop() == 0)   
+                {window.scrollTo(1,1)}
+            }
+            function dblclick()
+            {
+                  $('.tbn .btns th.phonenument').removeClass('addwhite');
+                  $('.tbn .btns th.phonenument').addClass('readiim');
+            }
+        </script>
+        <!--<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no, width=device-width" />-->
+        <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=yes;" />
+        <!--<meta name="viewport" content="target-densitydpi=device-dpi, width=device-width" />-->
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+    </head>
+    <body style="background: tan" onload="page_Load()">
+        <div class="content">
+            <!--<div style="float: left; width: 100%; height: auto;"><img id="blogo" src="" style="width: 97%; height: auto"></div>-->
+            <!--            <div style="margin-left: 5px; float: left; width: 400px; height: auto; color:white">
+                            <span>TEXTMUNICATION</span>
+                            <span>REWARDS PROGRAM</span>
+                        </div>-->
+            <div class="tbn">
+                <table border="0"  class="btns">
+                    <thead>
+                        <tr>
+                            <th colspan="3" class="userlogo"><img id="blogo" src=""></th>
+                        </tr>
+                        <tr>
+                            <th colspan="3" class="phonenument"></th>
+                        </tr>
+                        <tr>
+                            <td><input type="button" value="1" id="id1" class="justbutton"></td>
+                            <td><input type="button" value="2" id="id2" class="justbutton"></td>
+                            <td><input type="button" value="3" id="id3" class="justbutton"></td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><input type="button" value="4" id="id4" class="justbutton"></td>
+                            <td><input type="button" value="5" id="id5" class="justbutton"></td>
+                            <td><input type="button" value="6" id="id6" class="justbutton"></td>
+                        </tr>
+                        <tr>
+                            <td><input type="button" value="7" id="id7" class="justbutton"></td>
+                            <td><input type="button" value="8" id="id8" class="justbutton"></td>
+                            <td><input type="button" value="9" id="id9" class="justbutton"></td>
+                        </tr>
+                        <tr>
+                            <td><input type="button" value="Back" id="id10" class="cbtn"></td>
+                            <td><input type="button" value="0" id="id0" class="justbutton"></td>
+                            <td><input type="button" value="Send" id="id12"></td>
+                        </tr>
+                </table>
+                <div style="margin-left: 15px; float: left; width: 50px; height: auto;"><img src="../images/logo/textmunication.png" alt="Textmunication" style="width:220px;">
+                </div>
+                <div style="margin-left: 15px; float: left; width: 100%; height: auto;">
+                    <span style="color:white">Standart text/data rates may apply, up to 5 messages/month. You can opt-out
+                        anytime Text STOP to 87365"</span>
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript">
+            function hideAddressBar222(){
+                if(document.documentElement.scrollHeight<window.outerHeight/window.devicePixelRatio)
+                    document.documentElement.style.height=(window.outerHeight/window.devicePixelRatio)+'px';
+                //  setTimeout(window.scrollTo(0,0),0);
+            }
+            //window.addEventListener("load",function(){hideAddressBar222();});
+            //window.addEventListener("orientationchange",function(){hideAddressBar222();});
+
+        </script>
+    </body>
+</html>

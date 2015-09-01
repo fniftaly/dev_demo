@@ -1,0 +1,318 @@
+<?php
+
+/**
+ * Application_Model_User class.
+ * 
+ * @extends Application_Model_Entityabstract
+ */
+class Application_Model_Report extends Application_Model_Abstract {
+
+    /**
+     * Can this user create contests?
+     * 
+     * @access public
+     * @return void
+     */
+    public function getMessageCountList($userid) {
+        if ($userid) {
+            $sql = "CALL user_message_sent_count($userid)";
+            $rs = $this->query($sql);
+            if ($rs->hasRecords()) {
+                if ($rs->total) {
+                    return $rs->total;
+                }
+            }
+        }
+        return 0;
+    }
+
+    public function getMessageCountListMonthYear($userid, $rmonth, $ryear) {
+        if ($userid) {
+            $monthStartDate = date("Y-m-d H:i:s", strtotime($ryear . '-' . $rmonth . '-01' . ' 00:00:00'));
+            $monthEndDate = date("Y-m-d H:i:s", strtotime('-1 second', strtotime('+1 month', strtotime($monthStartDate))));
+
+            $sql = "CALL user_message_sent_count_my($userid,'$monthStartDate','$monthEndDate')";
+            $rs = $this->query($sql);
+            if ($rs->hasRecords()) {
+                if ($rs->total) {
+                    return $rs->total;
+                }
+            }
+        }
+        return 0;
+    }
+
+    public function getMessageCountListLastPeriod($userid, $period) {
+        if ($userid) {
+            $monthEndDate = date("Y-m-d H:i:s");
+            $monthStartDate = date('Y-m-d H:i:s', strtotime('-' . $period . ' days'));
+
+            $sql = "CALL user_message_sent_count_my($userid,'$monthStartDate','$monthEndDate')";
+            $rs = $this->query($sql);
+            if ($rs->hasRecords()) {
+                if ($rs->total) {
+                    return $rs->total;
+                }
+            }
+        }
+        return 0;
+    }
+
+    public function getTotalOptIns($userid) {
+        if ($userid) {
+            $sql = "CALL total_opt_ins($userid)";
+            $rs = $this->query($sql);
+            if ($rs->hasRecords()) {
+                if ($rs->total) {
+                    return $rs->total;
+                }
+            }
+        }
+        return 0;
+    }
+
+    public function getTotalOptOuts($userid) {
+        if ($userid) {
+            $sql = "CALL total_opt_outs($userid)";
+            $rs = $this->query($sql);
+            if ($rs->hasRecords()) {
+                if ($rs->total) {
+                    return $rs->total;
+                }
+            }
+        }
+        return 0;
+    }
+
+    public function getTotalOptInsPeriod($userid, $period) {
+        if ($userid) {
+            $monthEndDate = date("Y-m-d H:i:s");
+            $monthStartDate = date('Y-m-d H:i:s', strtotime('-' . $period . ' days'));
+
+            $sql = "CALL total_opt_ins_period($userid,'$monthStartDate','$monthEndDate')";
+            $rs = $this->query($sql);
+            if ($rs->hasRecords()) {
+                if ($rs->total) {
+                    return $rs->total;
+                }
+            }
+        }
+        return 0;
+    }
+
+    public function getTotalOptOutsPeriod($userid, $period) {
+        if ($userid) {
+            $monthEndDate = date("Y-m-d H:i:s");
+            $monthStartDate = date('Y-m-d H:i:s', strtotime('-' . $period . ' days'));
+
+            $sql = "CALL total_opt_outs_period($userid,'$monthStartDate','$monthEndDate')";
+            $rs = $this->query($sql);
+            if ($rs->hasRecords()) {
+                if ($rs->total) {
+                    return $rs->total;
+                }
+            }
+        }
+        return 0;
+    }
+
+    public function reportCampaignHistory($userid) {
+        if ($userid) {
+            $sql = "CALL campaign_history_report($userid)";
+            $rs = $this->query($sql);
+            if ($rs->hasRecords()) {
+                return $rs->fetchAll();
+            }
+        }
+        return NULL;
+    }
+
+    public function reportCampaignMessageStatus($messageid) {
+        if ($messageid) {
+            $sql = "CALL campaign_message_status($messageid)";
+            $rs = $this->query($sql);
+            if ($rs->hasRecords()) {
+                return $rs->fetchAll();
+            }
+        }
+        return NULL;
+    }
+
+    public function listTopthreeFolders($userid) {
+        if ($userid) {
+            $sql = "CALL top_three_folder_optins($userid)";
+            $rs = $this->query($sql);
+            if ($rs->hasRecords()) {
+                return $rs->fetchAll();
+            }
+        }
+        return NULL;
+    }
+
+    public function listTopthreeKeywords($userid) {
+        if ($userid) {
+            $sql = "CALL top_three_keyword_optins($userid)";
+            $rs = $this->query($sql);
+            if ($rs->hasRecords()) {
+                return $rs->fetchAll();
+            }
+        }
+        return NULL;
+    }
+
+    public function totalOptinsByFolder($folderid) {
+        if ($folderid) {
+            $sql = "CALL count_total_optins_byfolder($folderid)";
+            $rs = $this->query($sql);
+            if ($rs->hasRecords()) {
+                if ($rs->total) {
+                    return $rs->total;
+                }
+            }
+        }
+        return NULL;
+    }
+
+    public function totalOptoutsByFolder($folderid) {
+        if ($folderid) {
+            $sql = "CALL count_total_optouts_byfolder($folderid)";
+            $rs = $this->query($sql);
+            if ($rs->hasRecords()) {
+                if ($rs->total) {
+                    return $rs->total;
+                }
+            }
+        }
+        return NULL;
+    }
+
+    public function totalCampaignByFolder($folderid) {
+        if ($folderid) {
+            $sql = "CALL count_total_campaign_byfolder($folderid)";
+            $rs = $this->query($sql);
+            if ($rs->hasRecords()) {
+                if ($rs->total) {
+                    return $rs->total;
+                }
+            }
+        }
+        return NULL;
+    }
+
+    public function totalOptinsByKeyword($keywordid) {
+        if ($keywordid) {
+            $sql = "CALL count_total_optins_bykeyword($keywordid)";
+            $rs = $this->query($sql);
+            if ($rs->hasRecords()) {
+                if ($rs->total) {
+                    return $rs->total;
+                }
+            }
+        }
+        return NULL;
+    }
+
+    public function totalOptoutsByKeyword($keywordid) {
+        if ($keywordid) {
+            $sql = "CALL count_total_optouts_bykeyword($keywordid)";
+            $rs = $this->query($sql);
+            if ($rs->hasRecords()) {
+                if ($rs->total) {
+                    return $rs->total;
+                }
+            }
+        }
+        return NULL;
+    }
+
+    public function totalCampaignByKeyword($keywordid) {
+        if ($keywordid) {
+            $sql = "CALL count_total_campaign_bykeyword($keywordid)";
+            $rs = $this->query($sql);
+            if ($rs->hasRecords()) {
+                if ($rs->total) {
+                    return $rs->total;
+                }
+            }
+        }
+        return NULL;
+    }
+
+    public function totalCampaignByUser($userid, $period) {
+        if ($userid) {
+            $sql = "CALL count_total_campaign_byuser($userid,$period)";
+            $rs = $this->query($sql);
+            if ($rs->hasRecords()) {
+                if ($rs->total) {
+                    return $rs->total;
+                }
+            }
+        }
+        return NULL;
+    }
+
+    public function findChildUser($userid) {
+        if ($userid) {
+            $sql = "CALL find_child_user($userid)";
+            $rs = $this->query($sql);
+            if ($rs->hasRecords()) {
+                return $rs->fetchAll();
+            }
+        }
+        return NULL;
+    }
+
+    public function findChildEntityList($userid, $type) {
+        if ($userid) {
+            $sql = "CALL find_childentity_list($userid,$type)";
+            $rs = $this->query($sql);
+            if ($rs->hasRecords()) {
+                return $rs->fetchAll();
+            }
+        }
+        return NULL;
+    }
+
+    public function getTotalSubscriberByPeriod($userid, $period) {
+        if ($userid) {
+            $monthEndDate = date("Y-m-d H:i:s");
+            $monthStartDate = date('Y-m-d H:i:s', strtotime('-' . $period . ' days'));
+
+            $sql = "CALL folder_get_subscribers_period($userid,'$monthStartDate','$monthEndDate')";
+            $rs = $this->query($sql);
+            if ($rs->hasRecords()) {
+                if ($rs->total) {
+                    return $rs->total;
+                }
+            }
+        }
+        return NULL;
+    }
+
+    public function getTotalSubscriberByFolder($folderid) {
+        if ($folderid) {
+            $sql = "CALL folder_get_subscribers_inout($folderid)";
+            $rs = $this->query($sql);
+            if ($rs->hasRecords()) {
+                if ($rs->num_rows) {
+                    return $rs->num_rows;
+                }
+            }
+        }
+        return 0;
+    }
+
+    public function getTotalSubscriberByKeyword($keywordid) {
+        if ($keywordid) {
+            $sql = "CALL folder_get_subscribers_inout_bykeyword($keywordid)";
+            $rs = $this->query($sql);
+            if ($rs->hasRecords()) {
+                if ($rs->num_rows) {
+                    return $rs->num_rows;
+                }
+            }
+        }
+        return NULL;
+    }
+
+}

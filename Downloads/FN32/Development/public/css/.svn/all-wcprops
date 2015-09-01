@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 42
+/svn/txt-api/!svn/ver/456/trunk/public/css
+END
+login.css
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/txt-api/!svn/ver/447/trunk/public/css/login.css
+END
+custom.css
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/txt-api/!svn/ver/620/trunk/public/css/custom.css
+END
+plugin.css
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/txt-api/!svn/ver/68/trunk/public/css/plugin.css
+END
+screen.css
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/txt-api/!svn/ver/456/trunk/public/css/screen.css
+END
+colorbox.css
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/txt-api/!svn/ver/456/trunk/public/css/colorbox.css
+END

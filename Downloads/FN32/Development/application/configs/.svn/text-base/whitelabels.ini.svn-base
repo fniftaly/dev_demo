@@ -1,0 +1,83 @@
+[j.admin.textmunication.com]
+name  = Jextmunication
+logo  = textmunication.png
+email = jason_memory@yahoo.com
+whitelabel = false
+
+[brandstand.wl.textm.us]
+name  = Brandstand
+logo  = brandstand.jpg
+logowidth = 500px
+email = Support@brandstandgroupmail.com
+
+[cole.wl.textm.us]
+name = Cole
+logo = cole.jpg
+
+[daily.wl.textm.us]
+name  = Daily
+logo  = daily.jpg
+logowidth = 390px
+
+[ebowlbiz.wl.textm.us]
+name  = Ebowlbiz
+logo  = ebowlbiz.jpg
+logowidth = 300px
+
+[hogan.wl.textm.us]
+name  = Hogan
+logo  = hoganmedia.png
+
+[jivaldi.wl.textm.us]
+name  = Jivaldi
+logo  = jivaldi.png
+
+[mxs.wl.textm.us]
+name  = Nafpro
+logo  = mxs.jpg
+logowidth = 250px
+
+[nafpro.wl.textm.us]
+name  = Nafpro
+logo  = nafpro.png
+email = Service@NAFPro.com
+logowidth = 375px
+
+[overstreet.wl.textm.us]
+name  = Overstreet
+logo  = overstreet.jpg
+
+[pizzafactory.wl.textm.us]
+name  = Pizza Factory
+logo  = pizzafactory.png
+logowidth = 430px
+
+[prosolutions.wl.textm.us]
+name  = Prosolutions
+logo  = prosolutions.png
+email = info@prosolutionssoftware.com
+
+[relylocal.wl.textm.us]
+name  = Rely Local
+logo  = relylocal.jpg
+logowidth = 200px
+
+[sandj.wl.textm.us]
+name  = "S&J"
+logo  = sandj.png
+logowidth = 212px
+
+[shotrocket.wl.textm.us]
+name  = Shotrocket
+logo  = shotrocket.png
+logowidth = 300px
+
+[sportstars.wl.textm.us]
+name  = Sportstars
+logo  = superstars.png
+logowidth = 300px
+
+[viplist.wl.textm.us]
+name  = VIP List
+logo  = viplist.png
+logowidth = 300px

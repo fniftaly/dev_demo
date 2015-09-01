@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Touchable</title>
+        <script type="text/javascript" src="../mobileln/jquery.js"></script>
+        <style>
+            .content{width: 465px;margin:auto;margin-top:0px; height: auto;}
+            .eninput{width:500px;}
+            /*.eninput{width:500px;}*/
+            .tbn{float: left;width: 100%;height: 100%;}
+            /*.id12{height: 80px;width:400px; text-align:center;font-size: 35px; background: darkslateblue;color:white;}*/
+            .id12{height: 105px;width:160px;font-size: 45px;text-align: center;background:green;}
+            .tbn .btns td{height: 113px;width:160px;font-size: 45px;text-align: center;background:#F9F9F9;}
+            .tbn .btns th.ccc{color:blue;background:#F9F9F9; font-size: 35px;}
+            /*.tbn .btns th.userlogo{height:95px;}*/
+            .tbn .btns th.idclear{color:blue;background:#F9F9F9; font-size: 35px;}
+            .tbn .btns th.phonenument{color:blue;background:#F9F9F9;height: 60px;font-size: 35px}
+            .readiim{background: orange;}
+            .addwhite{background: #F9F9F9;}
+        </style>
+
+        <script type="text/javascript">
+            function getURLParameter(a){return decodeURIComponent((RegExp("[?|&]"+a+"=([^&;]+?)(&|#|;|$)").exec(location.search)||[,""])[1].replace(/\+/g,"%20"))||null}var BID=getURLParameter("id");
+            $(document).ready(function(){var a="",k = true,g="../images/tablogo/"+BID+".png",m = new Image();m.src = "../images/tablogo/"+BID+".png"; m.onload = function(){ if(m.width==0){k = false;}}
+                m.onload();$(".tbn .btns th.phonenument").addClass("addwhite");$("#blogo").attr("src",g);var c=12;
+                $(".btns td").on("click hover",function(b){b=$(this).text();if(a.length<c){if(1==a.substring(0,1)){if(c=14,1==a.length||5==a.length||9==a.length)a=a.concat("-")}else if(c=12,3==a.length||7==a.length)a=a.concat("-");a=a.concat(b);$(".tbn .btns th.phonenument").text(a).css('color','blue');}});
+                
+                $(".tbn .btns th.ccc").on("click",function(){var b=a.length;--b;a=a.substring(0,
+                    b);$(".tbn .btns th.phonenument").text(a)});
+
+                $(".tbn .btns th.id12").on("click",function(){
+                       var b=!1;
+                       $(".tbn .btns th.phonenument").hasClass("readiim")&&(b=!0);
+                       var d=$(".tbn .btns th.phonenument").text().replace(/[^\d]/g,""),
+                         e=d.length,
+                         f=!0;
+                         if(10==e)
+                             d="1"+d,
+                             f=!0;
+                             else if(0!=e&&10>e||12<=e)
+                                 $(".tbn .btns th.phonenument").text(d+" Incorrect #").css("color","red"),
+                                 f=!1;
+                                 if(!b){var e="../mobileln/rewards.php",
+                                     c="rid="+BID+"&rphone="+d;
+                                     f&&($.ajax({
+                                         type:"POST",
+                                         url:e,data:c,
+                                          success:function(a){
+//                                              alert(a)
+                                           if(a!='')
+                                             $(".tbn .btns th.phonenument").text(a);  
+                                          }
+                                      }
+                                       )
+                                     ,a="",
+                                     $(".tbn .btns th.phonenument").text(""))}
+                                     b&&
+                        (c="rid="+BID+"&rphone="+d+"&reward=reward",f&&$.ajax({type:"POST",url:"../mobfbtn/rewards.php",data:c,success:function(a){a=a?a:"empty";$(".tbn .btns th.phonenument").text(a)}}))});
+
+                $("#blogo").on("click",function(){!0==$(".tbn .btns th.phonenument").hasClass("addwhite")?($(".tbn .btns th.phonenument").removeClass("addwhite"),$(".tbn .btns th.phonenument").addClass("readiim"),$(".tbn .btns th.phonenument").css("background","orange")):($(".tbn .btns th.phonenument").removeClass("readiim"),$(".tbn .btns th.phonenument").addClass("addwhite"),
+                    $(".tbn .btns th.phonenument").css("background","white"));a="";$(".tbn .btns th.phonenument").text("")});
+                $(".tbn .btns th.idclear").on("click",function(){$(".tbn .btns th.phonenument").text("");a="";$(".tbn .btns th.phonenument").css("color","blue");});
+            
+            });
+         
+        </script>
+        <!--<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">-->
+        <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
+        <meta name="viewport" content="target-densitydpi=device-dpi, initial-scale=1.0, user-scalable=no" />
+        <!--<meta name="viewport" content="width=device-width" />-->
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+    </head>
+    <body style="background:#000">
+        <div class="content">
+            <div class="tbn">
+                <table border="0"  class="btns">
+                    <tr><th colspan="3" class="userlogo"><img id="blogo" alt="" src="#" style="width:100%; height:155px"></th></tr>
+                    <tr><th colspan="3" class="phonenument"></th></tr><tr><td>1</td><td>2</td><td>3</td></tr>
+                    <tr><td>4</td><td>5</td><td>6</td></tr><tr><td>7</td><td>8</td><td>9</td></tr>
+                    <tr><th class="idclear">CLEAR</th><td>0</td><th class="id12" colspan="3">SEND</th></tr>
+                    <!--<tr><th class="ccc">Back</th><td>0</td><th class="idclear">CLEAR</th></tr>-->
+                    <!--<tr><th class="id12" colspan="3">SEND</th></tr>-->
+                </table>
+            </div>
+            <div style="margin-left: 15px; float: left; width: 50px; height: auto;"><img src="../images/logo/textmunication.png" alt="Textmunication" style="width:220px;"></div>
+            <div style="margin-left: 15px; float: left; width: 100%; height: auto;">
+                <span style="color:white">Standard text/data rates may apply, up to 5 messages/month. You can opt-out
+                    anytime Text STOP to 87365"</span>
+            </div>
+        </div>
+        <script type="text/javascript">
+            $(document).ready(function(){if (navigator.userAgent.match(/Android/i)){window.scrollTo(0,0);var nPageH = $(document).height();var nViewH=window.outerHeight;if(nViewH>nPageH){
+                        nViewH=nViewH/window.devicePixelRatio;$('body').css('height',nViewH+'px');}setTimeout(window.scrollTo(1,1),0);if ($(window).scrollTop() == 0){window.scrollTo(1,1)}}});</script>
+    </body>
+</html>

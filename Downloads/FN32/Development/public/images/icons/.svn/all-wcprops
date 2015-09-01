@@ -1,0 +1,53 @@
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/txt-api/!svn/ver/151/trunk/public/images/icons
+END
+tip.png
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/txt-api/!svn/ver/114/trunk/public/images/icons/tip.png
+END
+maintenance.png
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/txt-api/!svn/ver/151/trunk/public/images/icons/maintenance.png
+END
+info_small.png
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/txt-api/!svn/ver/114/trunk/public/images/icons/info_small.png
+END
+warning.png
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/txt-api/!svn/ver/118/trunk/public/images/icons/warning.png
+END
+success.png
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/txt-api/!svn/ver/114/trunk/public/images/icons/success.png
+END
+error.png
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/txt-api/!svn/ver/114/trunk/public/images/icons/error.png
+END
+clock.png
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/txt-api/!svn/ver/104/trunk/public/images/icons/clock.png
+END
+info.png
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/txt-api/!svn/ver/114/trunk/public/images/icons/info.png
+END

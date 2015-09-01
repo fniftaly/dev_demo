@@ -1,0 +1,201 @@
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html>
+    <head>
+        <script type="text/javascript" src="jquery-1.7.1.min.js"></script>
+        <title>Sms</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <script type="text/javascript">
+              function getURLParameter(name) {
+                return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1].replace(/\+/g, '%20'))||null;
+            }
+            
+            var BID = getURLParameter('id');
+//            alert(BID);
+            
+            var year = new Date().getFullYear();
+            var month=0;
+            $(document).ready(function(){
+                
+                for(n=0; n < 100; n++){
+                $('#byear').append("<option value='" + (year- n)+ "'>" + (year- n)+ "</option>");
+                }
+                
+                for(n=1; n <= 12; n++){
+                if(n < 10) {  
+                  $('#bmonth').append("<option value=0" +n+ ">0" + n+ "</option>");
+                }else{
+                     $('#bmonth').append("<option value=" +n+ ">" +n+ "</option>");
+                }
+                }
+                for(n=1; n <= 31; n++){
+                if(n < 10) {  
+                  $('#bday').append("<option value=0" +n+ ">0" + n+ "</option>");
+                }else{
+                     $('#bday').append("<option value=" +n+ ">" +n+ "</option>");
+                }
+                }
+                $('#phonenumber').ForceNumericOnly();
+                
+               $('#phonenumber').change(function(){
+                  var phone = $(this).val();
+                    if(phone.length < 10 || phone.length > 10){
+                      $(this).val(phone+" incorrect").css('color','red');
+                      return false;
+                  }else{
+                      $(this).css('color','black');
+                  }
+               }); 
+               $('#email').change(function(){
+                  var email = $(this).val();
+                    if(!IsEmail(email)){
+                      $(this).val(email+" incorrect").css('color','red');
+                      return false;
+                  }else{
+                      $(this).css('color','black');
+                  }
+               }); 
+                
+                $('#datasave').click(function(){
+                    var phone = ($('#phonenumber').val()).trim();
+                    var first = $('#firstname').val();
+                    var last = $('#lastname').val();
+                    var day = $('#bday').val();
+                    var month = $('#bmonth').val();
+                    var year = $('#byear').val();
+                    var email = ($('#email').val()).trim();
+                    var confentry = ($('#confentry').is(':checked'))?1:0;
+                    
+//                    alert('Ph: '+phone+"\nFir: "+first+"\nLas: "+last+"\nday: "+day+"\nMon: "+month+"\nYear: "+year+"\nCkb: "+confentry);
+                    
+                    if(phone=="" || hasWhiteSpace(phone) || first=="" || last == "" || day =="00" || month =="00" || year =="0000" || email== "" || hasWhiteSpace(email) || confentry==0){
+                        $('.erinfo').fadeIn('slow').css('color','red');
+                        return false;
+                      }else{ $('.erinfo').fadeOut('slow');}
+                      var Url = "clubready.php";
+//                      var Url = "../test.php";
+                      var data = "id="+BID+"&phone="+phone+"&first="+first+
+                                     "&last="+last +"&day="+day+"&month="+month+
+                                     "&year="+year+"&email="+email+"&cnfy="+confentry;
+                      
+                      $.ajax({
+                         url:Url,
+                         type:"POST",
+                         data:data,
+                         success: function(data){
+//                             alert(data);
+//                             return;
+                             if(data !=0){
+                                var jsn = JSON.parse(data);
+                                var userid = jsn['UserId']; 
+                                $('#phonenumber').val("");
+                                $('#firstname').val("");
+                                $('#lastname').val("");
+                                $('#bday').val("day");
+                                $('#bmonth').val("month");
+                                $('#byear').val("year");
+                                $('#email').val("");
+                                if($('#confentry').is(':checked'))
+                                {
+                                    $('#confentry').removeAttr('checked');    
+                                 }
+                                 $('.erinfo').text("Submition was successfull - "+userid).fadeIn();
+//                                 $('#content').text("Submition was successfull - "+userid).css('color','red');
+                             }else{
+                                $('.erinfo').text("Submition failed").fadeIn();
+                                $('#phonenumber').val("");
+                                $('#firstname').val("");
+                                $('#lastname').val("");
+                                $('#bday').val("day");
+                                $('#bmonth').val("month");
+                                $('#byear').val("year");
+                                $('#email').val("");
+                                if($('#confentry').is(':checked'))
+                                {
+                                    $('#confentry').removeAttr('checked');    
+                                 }
+                             }
+                             
+                      }
+                  });
+                });
+            
+            });
+ function hasWhiteSpace(s) {
+  return s.indexOf(' ') >= 0;
+}
+  function IsEmail(email) {
+  var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+  return regex.test(email);
+}
+jQuery.fn.ForceNumericOnly =
+function()
+{
+    return this.each(function()
+    {
+        $(this).keydown(function(e)
+        {
+            var key = e.charCode || e.keyCode || 0;
+            // allow backspace, tab, delete, arrows, numbers and keypad numbers ONLY
+            // home, end, period, and numpad decimal
+            return (
+                key == 8 || 
+                key == 9 ||
+                key == 46 ||
+                key == 110 ||
+                key == 190 ||
+                (key >= 35 && key <= 40) ||
+                (key >= 48 && key <= 57) ||
+                (key >= 96 && key <= 105));
+        });
+    });
+};
+        </script>
+        <style>
+
+            /*body{background:antiquewhite}*/
+            /*#content table{width: 100%;height: auto}*/
+            .reqired{color:red;}
+            #firstname,#lastname,#phonenumber,#email{width:100%; border-collapse: collapse; border: 1px solid #999999;height: 25px;}
+            .submit{text-align: center}
+            #datasave{height: 30px; width: 100px; border-radius: 6px; border-collapse: collapse; border: 1px solid green; font-size: 12px}
+            .tdalign.icon{text-align:center ;}
+            .erinfo{display:none;color:red}
+            table.maintable tr.callback{display: none;}
+        </style>
+        <link href="style.css" rel="stylesheet" type="text/css" />
+        <link href="custom.css" rel="stylesheet" type="text/css" />
+        <!--<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />-->
+        <!--<meta name="viewport" content="target-densitydpi=device-dpi, initial-scale=1.0, user-scalable=no" />-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <div id="content">
+            <table cellpadding="10" class="maintable">
+                <tr><td class="tdalign icon" colspan="2"><img src="../images/clubready/clubready.png"></td></tr>
+                <tr class="callback"><td colspan="2"></td></tr>
+                <tr><td class="tdalign"><span class="reqired">*</span>Phone:</td><td><input type="text" id="phonenumber" name="phonenumber"></td></tr>
+                <tr><td class="tdalign"><span class="reqired">*</span>FirstName:</td><td><input type="text" id="firstname" name="firstname"></td></tr>
+                <tr><td class="tdalign"><span class="reqired">*</span>LastName:</td><td><input type="text" id="lastname" name="lastname"></td></tr>
+                <tr><td class="tdalign"><span class="reqired">*</span>Email:</td><td><input type="text" id="email" name="email"></td></tr>
+                <tr><td class="tdalign"><span class="reqired">*</span>Birthday:</td><td>
+                    <select id="bmonth" name="bmonth">
+                        <option value="00" selected>month</option>
+                    </select>
+                    <select id="bday" name="bday">
+                     <option value="00" selected>day</option>
+                    </select>
+                        <select id="byear" name="byear">
+                         <option value="0000" selected>Year</option>   
+                        </select>
+                    </td></tr>
+                <tr><td colspan="2"><span class="reqired">*</span><input type="checkbox" id="confentry"><span>I accept all the terms & condiitons standard text/data rates may apply</span></td></tr>
+                <tr><td colspan="2"  class="submit"><input type="button" id="datasave" value="Submit"></td></tr>
+            </table>
+            <span class="erinfo">Make sure all entries are correct</span>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,47 @@
+[production]
+phpSettings.display_startup_errors = 0
+phpSettings.display_errors = 0
+includePaths.library = APPLICATION_PATH "/../library"
+bootstrap.path = APPLICATION_PATH "/Bootstrap.php"
+bootstrap.class = "Bootstrap"
+appnamespace = "Application"
+resources.frontController.controllerDirectory = APPLICATION_PATH "/controllers"
+resources.frontController.params.displayExceptions = 1
+; If we want to use layouts, which, for an API we won't
+resources.layout.layoutPath = APPLICATION_PATH "/layouts/scripts"
+; Allows for multiple view handler objects
+resources.view[] =
+; Database credentials
+resources.db.adapter         = mysqli
+resources.db.params.host     = localhost
+resources.db.params.username = txt-api
+resources.db.params.password = txt@p1
+resources.db.params.dbname   = textmunication
+; We need this if we want to use any database hooks in the framework
+resources.db.isDefaultTableAdapter = true
+;api.domain = "api.txt.ftws.co"
+api.domain = "api.textmunication.com"
+
+[staging : production]
+
+[testing : production]
+phpSettings.display_startup_errors = 1
+phpSettings.display_errors = 1
+
+[development : production]
+phpSettings.display_startup_errors = 1
+phpSettings.display_errors = 1
+resources.frontController.params.displayExceptions = 1
+
+[jason : production]
+api.domain = "j.api.textmunication.com"
+phpSettings.display_startup_errors = 1
+phpSettings.display_errors = 1
+testing = 1
+
+[robert : production]
+api.domain = "r.api.textmunication.com"
+;resources.db.params.dbname   = "textmunication-dev"
+phpSettings.display_startup_errors = 1
+phpSettings.display_errors = 1
+testing = 1
