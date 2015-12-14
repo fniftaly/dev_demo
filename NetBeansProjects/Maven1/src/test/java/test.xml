@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+<suite name="com.jetty_Maven1_war_0.1.0-SNAPSHOT">
+    <test name="All tests for com.jetty_Maven1_war_0.1.0-SNAPSHOT">
+        <packages>
+            <package name=".*"/>
+        </packages>
+    </test>
+
+</suite>

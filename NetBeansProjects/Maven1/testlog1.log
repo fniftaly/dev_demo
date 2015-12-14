@@ -1,0 +1,34 @@
+2015-11-10 11:56:11,674 [main] INFO com.mvn.tabs.Tabs - LOGGER NAME: com.mvn.tabs.Tabs
+2015-11-10 11:56:11,684 [main] INFO com.mvn.tabs.Tabs - CHECKING ALL TABS EXISTENCE
+2015-11-10 11:56:11,913 [main] INFO com.mvn.aircraft.AircraftTab - LOGGER NAME: com.mvn.aircraft.AircraftTab
+2015-11-10 11:56:13,425 [main] INFO com.mvn.tabs.Tabs - AIRCRAFT_TAB_ID:{49005ac5-eb9b-f542-b71c-37253ca5711e}
+2015-11-10 11:56:13,731 [main] INFO com.mvn.tabs.Tabs - AIRCRAFT_TAB_LINK - PASSED
+2015-11-10 11:56:15,322 [main] INFO com.mvn.tabs.Tabs - AIRPORTS_TAB_ID:{49005ac5-eb9b-f542-b71c-37253ca5711e}
+2015-11-10 11:56:15,603 [main] INFO com.mvn.tabs.Tabs - AIRPORT_TAB_LINK - PASSED
+2015-11-10 11:56:17,004 [main] INFO com.mvn.tabs.Tabs - AIRTRAFFIC_TAB_ID:{49005ac5-eb9b-f542-b71c-37253ca5711e}
+2015-11-10 11:56:17,283 [main] INFO com.mvn.tabs.Tabs - AIRTRAFFIC_TAB_LINK - PASSED
+2015-11-10 11:56:18,566 [main] INFO com.mvn.aircraft.AircraftTab - *********AIRCRAFT TAB LINKS*************
+2015-11-10 11:56:30,141 [main] INFO com.mvn.aircraft.AircraftTab - AIRCRAFT SAFTY LINK - PASSED 
+2015-11-10 11:59:48,122 [main] INFO com.mvn.tabs.Tabs - LOGGER NAME: com.mvn.tabs.Tabs
+2015-11-10 11:59:48,132 [main] INFO com.mvn.tabs.Tabs - CHECKING ALL TABS EXISTENCE
+2015-11-10 11:59:48,374 [main] INFO com.mvn.aircraft.AircraftTab - LOGGER NAME: com.mvn.aircraft.AircraftTab
+2015-11-10 11:59:49,816 [main] INFO com.mvn.tabs.Tabs - AIRCRAFT_TAB_ID:{68cc6c94-acd5-514c-bc50-ab7b4bd38844}
+2015-11-10 11:59:50,084 [main] INFO com.mvn.tabs.Tabs - AIRCRAFT_TAB_LINK - PASSED
+2015-11-10 11:59:51,665 [main] INFO com.mvn.tabs.Tabs - AIRPORTS_TAB_ID:{68cc6c94-acd5-514c-bc50-ab7b4bd38844}
+2015-11-10 11:59:52,013 [main] INFO com.mvn.tabs.Tabs - AIRPORT_TAB_LINK - PASSED
+2015-11-10 11:59:53,464 [main] INFO com.mvn.tabs.Tabs - AIRTRAFFIC_TAB_ID:{68cc6c94-acd5-514c-bc50-ab7b4bd38844}
+2015-11-10 11:59:53,782 [main] INFO com.mvn.tabs.Tabs - AIRTRAFFIC_TAB_LINK - PASSED
+2015-11-10 11:59:55,040 [main] INFO com.mvn.aircraft.AircraftTab - *********AIRCRAFT TAB LINKS*************
+2015-11-10 12:00:06,651 [main] INFO com.mvn.aircraft.AircraftTab - AIRCRAFT SAFTY LINK - PASSED 
+2015-11-10 12:06:02,180 [main] INFO com.mvn.tabs.Tabs - LOGGER NAME: com.mvn.tabs.Tabs
+2015-11-10 12:06:02,187 [main] INFO com.mvn.tabs.Tabs - CHECKING ALL TABS EXISTENCE
+2015-11-10 12:06:02,289 [main] INFO com.mvn.aircraft.AircraftTab - LOGGER NAME: com.mvn.aircraft.AircraftTab
+2015-11-10 12:06:03,717 [main] INFO com.mvn.tabs.Tabs - AIRCRAFT_TAB_ID:{c5ae710e-30c9-9348-b0f2-a5d7f6e8d0c4}
+2015-11-10 12:06:03,990 [main] INFO com.mvn.tabs.Tabs - AIRCRAFT_TAB_LINK - PASSED
+2015-11-10 12:06:05,646 [main] INFO com.mvn.tabs.Tabs - AIRPORTS_TAB_ID:{c5ae710e-30c9-9348-b0f2-a5d7f6e8d0c4}
+2015-11-10 12:06:05,924 [main] INFO com.mvn.tabs.Tabs - AIRPORT_TAB_LINK - PASSED
+2015-11-10 12:06:07,344 [main] INFO com.mvn.tabs.Tabs - AIRTRAFFIC_TAB_ID:{c5ae710e-30c9-9348-b0f2-a5d7f6e8d0c4}
+2015-11-10 12:06:07,607 [main] INFO com.mvn.tabs.Tabs - AIRTRAFFIC_TAB_LINK - PASSED
+2015-11-10 12:06:08,851 [main] INFO com.mvn.aircraft.AircraftTab - *********AIRCRAFT TAB LINKS*************
+2015-11-10 12:06:19,867 [main] ERROR com.mvn.aircraft.AircraftTab - AIRCRAFT CERTIFICATION LINK - FAILED
+2015-11-10 12:06:20,249 [main] INFO com.mvn.aircraft.AircraftTab - AIRCRAFT SAFTY LINK - PASSED 
