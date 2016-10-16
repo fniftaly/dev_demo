@@ -14,6 +14,7 @@ import static org.junit.Assert.*;
  * @author def
    added remote file
  * test line for the push action remote master
+   one more line added for testing
  */
 public class UserImplIT {
     
@@ -96,3 +97,5 @@ public class UserImplIT {
     }
     
 }
+
+//test line for rebase
